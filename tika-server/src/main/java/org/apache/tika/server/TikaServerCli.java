@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.cogniteev.readability.Readability;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -55,6 +56,7 @@ import org.apache.tika.server.writer.MetadataListMessageBodyWriter;
 import org.apache.tika.server.writer.TextMessageBodyWriter;
 import org.apache.tika.server.writer.XMPMessageBodyWriter;
 import org.apache.tika.server.writer.ZipWriter;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 public class TikaServerCli {
     public static final int DEFAULT_PORT = 9998;
@@ -143,6 +145,7 @@ public class TikaServerCli {
             rCoreProviders.add(new SingletonResourceProvider(new TikaDetectors(tika)));
             rCoreProviders.add(new SingletonResourceProvider(new TikaParsers(tika)));
             rCoreProviders.add(new SingletonResourceProvider(new TikaVersion(tika)));
+            rCoreProviders.add(new SingletonResourceProvider(new Readability()));
             List<ResourceProvider> rAllProviders = new ArrayList<ResourceProvider>(rCoreProviders);
             rAllProviders.add(new SingletonResourceProvider(new TikaWelcome(tika, rCoreProviders)));
             sf.setResourceProviders(rAllProviders);
@@ -152,10 +155,10 @@ public class TikaServerCli {
             providers.add(new ZipWriter());
             providers.add(new CSVMessageBodyWriter());
             providers.add(new MetadataListMessageBodyWriter());
-            providers.add(new JSONMessageBodyWriter());
             providers.add(new XMPMessageBodyWriter());
             providers.add(new TextMessageBodyWriter());
             providers.add(new TikaServerParseExceptionMapper(returnStackTrace));
+            providers.add(new JacksonJsonProvider());
             if (logFilter != null) {
                 providers.add(logFilter);
             }

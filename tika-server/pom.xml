@@ -39,6 +39,13 @@
     </pluginRepository>
   </pluginRepositories>
 
+  <repositories>
+    <repository>
+      <id>karussell_releases</id>
+      <url>https://github.com/karussell/mvnrepo/raw/master/releases/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -124,6 +131,17 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jcl</artifactId>
       <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>de.jetwick</groupId>
+      <artifactId>snacktory</artifactId>
+      <version>1.2</version>
+      <!-- or if you prefer the latest build <version>1.2-SNAPSHOT</version> -->
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-jaxrs</artifactId>
+      <version>1.7.1</version>
     </dependency>
   </dependencies>
 
