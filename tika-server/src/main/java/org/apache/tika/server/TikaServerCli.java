@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.cogniteev.readability.Readability;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -37,6 +38,7 @@ import org.apache.cxf.jaxrs.lifecycle.ResourceProvider;
 import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
 import org.apache.tika.Tika;
 import org.apache.tika.config.TikaConfig;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 public class TikaServerCli {
   private static final Log logger = LogFactory.getLog(TikaServerCli.class);
@@ -107,6 +109,7 @@ public class TikaServerCli {
       rCoreProviders.add(new SingletonResourceProvider(new TikaDetectors(tika)));
       rCoreProviders.add(new SingletonResourceProvider(new TikaParsers(tika)));
       rCoreProviders.add(new SingletonResourceProvider(new TikaVersion(tika)));
+        rCoreProviders.add(new SingletonResourceProvider(new Readability()));
       List<ResourceProvider> rAllProviders = new ArrayList<ResourceProvider>(rCoreProviders);
       rAllProviders.add(new SingletonResourceProvider(new TikaWelcome(tika, rCoreProviders)));
       sf.setResourceProviders(rAllProviders);
@@ -115,8 +118,8 @@ public class TikaServerCli {
       providers.add(new TarWriter());
       providers.add(new ZipWriter());
       providers.add(new CSVMessageBodyWriter());
-      providers.add(new JSONMessageBodyWriter());
       providers.add(new TikaExceptionMapper());
+      providers.add(new JacksonJsonProvider());
       if (logFilter != null) {
     	  providers.add(logFilter);
       }
